@@ -19,6 +19,10 @@ const TaskSchema = new Schema({
         enum: ['To-Do', 'In-Progress', 'Done'],
         default: 'To-Do'
     },
+    order: {
+        type: Number,
+        default: 0
+    },
     user: {
         type: String,
         ref: 'User',
