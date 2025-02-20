@@ -37,22 +37,6 @@ export const createTask = async (req, res) => {
     }
 }
 
-export const getTasks = async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        return res.status(200).json({
-            status: 'success',
-            data: tasks,
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: 'Error fetching tasks',
-            error: error.message
-        });
-    }
-}
 
 export const getUserTasks = async (req, res) => {
     const {user} = req.params;
@@ -67,6 +51,62 @@ export const getUserTasks = async (req, res) => {
         res.status(500).json({
             status: 'error',
             message: 'Error fetching user tasks',
+            error: error.message
+        });
+    }
+}
+
+export const deleteTask = async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const task = await Task.findByIdAndDelete(id);
+        if (!task) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Task not found'
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Task deleted successfully'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 'error',
+            message: 'Error deleting task',
+            error: error.message
+        });
+    }
+}
+
+export const updateTask = async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const task = await Task.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+
+        if (!task) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Task not found'
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            data: task
+        });
+    } catch (error) {
+        return res.status(500).json({
+            status: 'error',
+            message: 'Error updating task',
             error: error.message
         });
     }
