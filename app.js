@@ -17,7 +17,7 @@ import taskRoutes from "./routes/TaskRoutes.js";
 connectDB();
 
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://tas-kit.vercel.app/"],
     credentials: true,
 
 }));
